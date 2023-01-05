@@ -1,0 +1,37 @@
+function apartmentHunting(blocks, reqs) {
+  // Initialize distances to Infinity for all blocks
+  const distances = blocks.map(() => Infinity);
+
+  // For each block and each requirement, we can update the distance to the nearest block with the requirement
+  for (let i = 0; i < blocks.length; i++) {
+    for (let j = 0; j < reqs.length; j++) {
+      const req = reqs[j];
+      // Iterate through blocks going forward
+      for (let k = i; k < blocks.length; k++) {
+        if (blocks[k][req]) {
+          distances[k] = Math.min(distances[k], k - i);
+        }
+      }
+      // Iterate through blocks going backward
+      for (let k = i; k >= 0; k--) {
+        if (blocks[k][req]) {
+          distances[k] = Math.min(distances[k], i - k);
+        }
+      }
+    }
+  }
+
+  // Return the index of the block with the minimum distance
+  return distances.indexOf(Math.min(...distances));
+}
+
+exports.apartmentHunting = apartmentHunting;
+
+
+I Initialized a list distance of the same length as blocks with all elements, initialized to Infinity.
+For each block "block" and each requirement "req", do the following:
+Iterate through the blocks starting from block and going forward. 
+For each block b, if b has req, then update distances[b] to be the distance from b to block.
+Iterate through the blocks starting from block and going backward. 
+For each block b, if b has req, then update distances[b] to be the distance from b to block.
+Then Return the index of the block that has the minimum distance in distances.
